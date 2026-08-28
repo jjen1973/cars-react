@@ -69,6 +69,12 @@ input {
   border: 1px solid rgba(246, 177, 33, 0.68);
   border-radius: 999px;
   color: #ffd467;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.landing-nav-actions .landing-contact:hover {
+  color: #ffcc33;
+  border-color: #ffcc33;
+  transform: translateY(-2px);
 }
 .landing-hero {
   min-height: calc(100vh - 110px);
@@ -138,17 +144,22 @@ input {
 .landing-highlights dt { color: #fff; font: 700 18px "Space Grotesk", sans-serif; }
 .landing-highlights dd { margin: 4px 0 0; color: #7f8895; font-size: 11px; }
 .landing-logo-stage { position: relative; display: grid; place-items: center; min-height: 560px; }
-.landing-logo-stage > img:not(.dangle-keys) {
+.landing-logo-lockup {
   position: relative;
   z-index: 1;
   width: min(100%, 760px);
-  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.52));
   animation: logo-float 5s ease-in-out infinite;
 }
-.landing-logo-stage .dangle-keys {
+.landing-logo-lockup > img:not(.dangle-keys) {
+  display: block;
+  position: relative;
+  width: 100%;
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.52));
+}
+.landing-logo-lockup .dangle-keys {
   position: absolute;
   z-index: 2;
-  top: 25%;
+  top: 13.5%;
   left: 12%;
   width: 18%;
   transform-origin: 73% 14%;
@@ -166,8 +177,8 @@ input {
 @keyframes logo-float { 50% { transform: translateY(-10px); } }
 @keyframes key-dangle { 0%, 100% { transform: rotate(2deg); } 50% { transform: rotate(-4deg); } }
 @media (prefers-reduced-motion: reduce) {
-  .landing-logo-stage > img,
-  .landing-logo-stage .dangle-keys { animation: none; }
+  .landing-logo-lockup,
+  .landing-logo-lockup .dangle-keys { animation: none; }
 }
 .shell {
   width: min(1100px, calc(100% - 48px));
@@ -757,7 +768,7 @@ body.modal-open {
   .landing-highlights { gap: 18px; margin-top: 30px; }
   .landing-highlights div:last-child { display: none; }
   .landing-logo-stage { min-height: 260px; order: -1; }
-  .landing-logo-stage > img:not(.dangle-keys) { width: min(100%, 430px); }
+  .landing-logo-lockup { width: min(100%, 430px); }
   .hero {
     min-height: 350px;
   }
