@@ -1,18 +1,14 @@
 import { useState, type FormEvent } from "react";
 
-const links: ReadonlyArray<{ label: string; href: string; className?: string }> = [
-  { label: "Home", href: "#top" },
-  { label: "Find your car", href: "#search-form", className: "active" },
-];
-
 type HeaderProps = {
   onContact: () => void;
+  onHome: () => void;
   onSearch: () => void;
   query: string;
   setQuery: (value: string) => void;
 };
 
-export function Header({ onContact, onSearch, query, setQuery }: HeaderProps) {
+export function Header({ onContact, onHome, onSearch, query, setQuery }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = () => setMenuOpen(false);
 
@@ -24,15 +20,12 @@ export function Header({ onContact, onSearch, query, setQuery }: HeaderProps) {
   return (
     <header className="hero">
       <nav className={`nav shell${menuOpen ? " menu-open" : ""}`} aria-label="Main navigation">
-        <a className="brand" href="#top" aria-label="bus home" onClick={closeMenu}>
+        <button className="brand brand-button" type="button" aria-label="Better Used Cars home" onClick={() => { closeMenu(); onHome(); }}>
           <img className="brand-mark" src="/bus.png" alt="" />
-        </a>
+        </button>
         <div className={`nav-links${menuOpen ? " is-open" : ""}`}>
-          {links.map((link) => (
-            <a key={link.href} className={link.className} href={link.href} onClick={closeMenu}>
-              {link.label}
-            </a>
-          ))}
+          <button type="button" onClick={() => { closeMenu(); onHome(); }}>Home</button>
+          <a className="active" href="#search-form" onClick={closeMenu}>Find your car</a>
           <button className="contact" type="button" onClick={() => { closeMenu(); onContact(); }}>
             Contact
           </button>

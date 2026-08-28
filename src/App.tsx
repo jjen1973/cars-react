@@ -3,6 +3,7 @@ import { CarDetailsModal } from "./components/CarDetailsModal";
 import { CarGrid } from "./components/CarGrid";
 import { ContactModal } from "./components/ContactModal";
 import { Header } from "./components/Header";
+import { LandingPage } from "./components/LandingPage";
 import { useCars } from "./hooks/useCars";
 import type { Car } from "./types";
 
@@ -12,6 +13,7 @@ export default function App() {
   const [maxPrice, setMaxPrice] = useState(100_000);
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
   const [contactOpen, setContactOpen] = useState(false);
+  const [page, setPage] = useState<"landing" | "catalog">("landing");
 
   const filteredCars = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -39,31 +41,49 @@ export default function App() {
     setContactOpen(true);
   };
 
+  const browseCars = (landingQuery: string) => {
+    updateQuery(landingQuery);
+    setPage("catalog");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <>
-      <Header query={query} setQuery={updateQuery} onContact={openContact} onSearch={() => document.querySelector("#cars")?.scrollIntoView({ behavior: "smooth" })} />
-      <main id="cars">
-        <section className="results shell">
-          <div className="results-heading">
-            <div>
-              <p className="eyebrow dark">Live vehicle data</p>
-              <h2>Search results <span className="result-count">({isLoading ? 6 : filteredCars.length})</span></h2>
+      {page === "landing" ? (
+        <LandingPage onBrowse={browseCars} onContact={openContact} />
+      ) : (
+        <>
+          <Header
+            query={query}
+            setQuery={updateQuery}
+            onContact={openContact}
+            onHome={() => setPage("landing")}
+            onSearch={() => document.querySelector("#cars")?.scrollIntoView({ behavior: "smooth" })}
+          />
+          <main id="cars">
+            <section className="results shell">
+              <div className="results-heading">
+                <div>
+                  <p className="eyebrow dark">Live vehicle data</p>
+                  <h2>Search results <span className="result-count">({isLoading ? 6 : filteredCars.length})</span></h2>
+                </div>
+                <div className="price-filter">
+                  <div className="filter-label"><span>Price range</span><strong>$20,000 to ${maxPrice.toLocaleString()}</strong></div>
+                  <input type="range" min="20000" max="100000" value={maxPrice} step="5000" aria-label="Maximum price" onChange={(event) => setMaxPrice(Number(event.target.value))} />
+                  <div className="range-labels"><span>$20k</span><span>$100k</span></div>
+                </div>
+              </div>
+              <p className="api-status" aria-live="polite">{status}</p>
+              <CarGrid cars={filteredCars} isLoading={isLoading} onSelect={setSelectedCar} />
+            </section>
+          </main>
+          <footer className="footer">
+            <div className="shell footer-inner">
+              <div><img className="brand-mark" src="/bus.png" alt="" /><p>Find something worth driving.</p></div>
             </div>
-            <div className="price-filter">
-              <div className="filter-label"><span>Price range</span><strong>$20,000 to ${maxPrice.toLocaleString()}</strong></div>
-              <input type="range" min="20000" max="100000" value={maxPrice} step="5000" aria-label="Maximum price" onChange={(event) => setMaxPrice(Number(event.target.value))} />
-              <div className="range-labels"><span>$20k</span><span>$100k</span></div>
-            </div>
-          </div>
-          <p className="api-status" aria-live="polite">{status}</p>
-          <CarGrid cars={filteredCars} isLoading={isLoading} onSelect={setSelectedCar} />
-        </section>
-      </main>
-      <footer className="footer">
-        <div className="shell footer-inner">
-          <div><img className="brand-mark" src="/bus.png" alt="" /><p>Find something worth driving.</p></div>
-        </div>
-      </footer>
+          </footer>
+        </>
+      )}
       {selectedCar ? <CarDetailsModal car={selectedCar} onClose={() => setSelectedCar(null)} onContact={openContact} /> : null}
       {contactOpen ? <ContactModal onClose={() => setContactOpen(false)} /> : null}
     </>
