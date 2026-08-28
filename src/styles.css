@@ -66,15 +66,21 @@ input {
 }
 .landing-nav-actions button { padding: 12px 18px; }
 .landing-nav-actions .landing-contact {
-  border: 1px solid rgba(246, 177, 33, 0.68);
+  border: 1px solid #ffd86a;
   border-radius: 999px;
-  color: #ffd467;
-  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  color: #100c03;
+  background: linear-gradient(135deg, #ffe370, #f2a900);
+  box-shadow: 0 8px 24px rgba(242, 169, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.48);
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 .landing-nav-actions .landing-contact:hover {
-  color: #ffcc33;
-  border-color: #ffcc33;
+  background: linear-gradient(135deg, #fff0a3, #ffc126);
+  box-shadow: 0 12px 32px rgba(255, 193, 38, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.65);
   transform: translateY(-2px);
+}
+.landing-nav-actions .landing-contact:focus-visible {
+  outline: 3px solid #2ab2ef;
+  outline-offset: 3px;
 }
 .landing-hero {
   min-height: calc(100vh - 110px);
