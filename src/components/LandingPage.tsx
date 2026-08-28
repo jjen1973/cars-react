@@ -64,7 +64,7 @@ export function LandingPage({ onBrowse, onContact }: LandingPageProps) {
 
         <div className="landing-logo-stage" aria-hidden="true">
           <div className="logo-glow" />
-          <img src="/bus.png" alt="" />
+          <img src="/buc-hero-keyless.png" alt="" />
           <img className="dangle-keys" src="/buc-keys.png" alt="" />
         </div>
       </section>
