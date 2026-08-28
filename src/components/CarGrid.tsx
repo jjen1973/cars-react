@@ -24,7 +24,7 @@ export function CarGrid({ cars, isLoading, onSelect }: CarGridProps) {
 
   return cars.length > 0 ? (
     <div className="car-grid" aria-live="polite">
-      {cars.map((car) => <CarCard key={`${car.Make_Name}-${car.Model_Name}-${car.listingIndex}`} car={car} onSelect={onSelect} />)}
+      {cars.map((car) => <CarCard key={car.listingKey} car={car} onSelect={onSelect} />)}
     </div>
   ) : (
     <p className="empty-state">No cars match that search.</p>

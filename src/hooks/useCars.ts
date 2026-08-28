@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { API_URL, fallbackCars } from "../data/cars";
+import { API_URL } from "../data/cars";
 import type { Car } from "../types";
 
-type ApiCar = Omit<Car, "listingIndex">;
+type ApiCar = Omit<Car, "listingIndex" | "listingKey" | "displayImage">;
+type ApiResponse = { products: ApiCar[] };
 
 export function useCars() {
   const [cars, setCars] = useState<Car[]>([]);
-  const [status, setStatus] = useState("Loading live models from NHTSA...");
+  const [status, setStatus] = useState("Loading vehicles from DummyJSON...");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -17,18 +18,26 @@ export function useCars() {
         const response = await fetch(API_URL, { signal: controller.signal });
         if (!response.ok) throw new Error("API request failed");
 
-        const data = (await response.json()) as { Results: ApiCar[] };
-        setCars(
-          data.Results.slice(0, 6).map((car, listingIndex) => ({
-            ...car,
-            listingIndex,
-          })),
-        );
-        setStatus("Showing 6 models pulled live from the NHTSA vehicle API.");
+        const { products } = (await response.json()) as ApiResponse;
+        if (products.length !== 5 || !products[0]?.images[1]) {
+          throw new Error("Unexpected vehicle response");
+        }
+
+        const displayCars = [
+          ...products.map((car) => ({ ...car, displayImage: car.thumbnail })),
+          { ...products[0], displayImage: products[0].images[1] },
+        ].map((car, listingIndex) => ({
+          ...car,
+          listingIndex,
+          listingKey: `${car.id}-${listingIndex}`,
+        }));
+
+        setCars(displayCars);
+        setStatus("Showing exactly 6 vehicle cards fetched from DummyJSON.");
       } catch (error) {
         if (error instanceof DOMException && error.name === "AbortError") return;
-        setCars(fallbackCars);
-        setStatus("Showing six sample models while the vehicle API is unavailable.");
+        setCars([]);
+        setStatus("Vehicle data is temporarily unavailable. Please try again.");
       } finally {
         if (!controller.signal.aborted) setIsLoading(false);
       }

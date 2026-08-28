@@ -1,22 +1,35 @@
-import { imageFor, priceFor } from "../data/cars";
+import type { KeyboardEvent } from "react";
 import type { Car } from "../types";
 
 type CarCardProps = { car: Car; onSelect: (car: Car) => void };
 
 export function CarCard({ car, onSelect }: CarCardProps) {
-  const { Make_Name: make, Model_Name: model, Model_Year: year = 2025, listingIndex } = car;
+  const openWithKeyboard = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onSelect(car);
+    }
+  };
 
   return (
-    <article className="car-card" style={{ animationDelay: `${listingIndex * 70}ms` }}>
-      <div className="car-image" style={{ backgroundImage: `url("${imageFor(listingIndex)}")` }} role="img" aria-label={`${make} ${model}`} />
+    <article
+      className="car-card"
+      style={{ animationDelay: `${car.listingIndex * 70}ms` }}
+      role="button"
+      tabIndex={0}
+      aria-label={`View details for ${car.brand} ${car.title}`}
+      onClick={() => onSelect(car)}
+      onKeyDown={openWithKeyboard}
+    >
+      <div className="car-image" style={{ backgroundImage: `url("${car.displayImage}")` }} role="img" aria-label={`${car.brand} ${car.title}`} />
       <div className="car-info">
-        <span className="car-year">{year} / {make}</span>
-        <h3 className="car-name">{model}</h3>
+        <span className="car-year">{car.brand} / {car.availabilityStatus}</span>
+        <h3 className="car-name">{car.title}</h3>
         <div className="car-meta">
-          <span>Available to explore</span>
-          <span className="car-price">${priceFor(listingIndex).toLocaleString()}</span>
+          <span>{car.rating.toFixed(1)} / 5 rating</span>
+          <span className="car-price">${car.price.toLocaleString()}</span>
         </div>
-        <button className="details-button" type="button" onClick={() => onSelect(car)}>View details</button>
+        <span className="details-button">View details</span>
       </div>
     </article>
   );

@@ -3,7 +3,6 @@ import { CarDetailsModal } from "./components/CarDetailsModal";
 import { CarGrid } from "./components/CarGrid";
 import { ContactModal } from "./components/ContactModal";
 import { Header } from "./components/Header";
-import { priceFor } from "./data/cars";
 import { useCars } from "./hooks/useCars";
 import type { Car } from "./types";
 
@@ -19,10 +18,11 @@ export default function App() {
     const priceQuery = normalizedQuery.replace(/[$,\s]/g, "");
 
     return cars.filter((car) => {
-      const price = priceFor(car.listingIndex);
-      const nameMatches = `${car.Make_Name} ${car.Model_Name}`.toLowerCase().includes(normalizedQuery);
-      const priceMatches = priceQuery.length > 0 && String(price).includes(priceQuery);
-      return (nameMatches || priceMatches) && price <= maxPrice;
+      const nameMatches = `${car.brand} ${car.title} ${car.description}`
+        .toLowerCase()
+        .includes(normalizedQuery);
+      const priceMatches = priceQuery.length > 0 && String(car.price).includes(priceQuery);
+      return (nameMatches || priceMatches) && car.price <= maxPrice;
     });
   }, [cars, maxPrice, query]);
 
@@ -31,7 +31,7 @@ export default function App() {
     const trimmed = value.trim();
     setStatus(trimmed
       ? `Showing matching results for "${trimmed}".`
-      : "Showing live vehicle results from the NHTSA vehicle API.");
+      : "Showing vehicle results from the DummyJSON API.");
   };
 
   const openContact = () => {

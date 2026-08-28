@@ -252,6 +252,13 @@ h2 {
   box-shadow: 0 13px 32px rgba(56, 37, 87, 0.14);
   transform: translateY(-3px);
 }
+.car-card[role="button"] {
+  cursor: pointer;
+}
+.car-card[role="button"]:focus-visible {
+  outline: 3px solid var(--lavender);
+  outline-offset: 4px;
+}
 .skeleton-card {
   pointer-events: none;
 }
@@ -323,6 +330,8 @@ h2 {
   font-weight: 700;
 }
 .details-button {
+  display: block;
+  text-align: center;
   width: 100%;
   margin-top: 16px;
   border: 1px solid var(--purple);
@@ -501,6 +510,12 @@ body.modal-open {
 .details-content h2 {
   margin: 0 0 22px;
   font-size: 30px;
+}
+.details-description {
+  margin: -8px 0 20px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
 }
 .details-list {
   display: grid;
