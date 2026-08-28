@@ -1,4 +1,5 @@
 import type { Car } from "../types";
+import { formatPrice } from "../utils/formatters";
 import { Modal } from "./Modal";
 
 type Props = { car: Car; onClose: () => void; onContact: () => void };
@@ -6,7 +7,7 @@ type Props = { car: Car; onClose: () => void; onContact: () => void };
 export function CarDetailsModal({ car, onClose, onContact }: Props) {
   const details: Array<[string, string]> = [
     ["Make", car.brand],
-    ["Price", `$${car.price.toLocaleString()}`],
+    ["Price", formatPrice(car.price)],
     ["Rating", `${car.rating.toFixed(1)} / 5`],
     ["Availability", car.availabilityStatus],
     ["Units in stock", car.stock.toString()],

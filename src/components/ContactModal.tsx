@@ -9,6 +9,12 @@ const fields = [
   { id: "contact-email", name: "reply_to", type: "email", placeholder: "Your email" },
 ] as const;
 
+const emailConfig = {
+  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+} as const;
+
 export function ContactModal({ onClose }: Props) {
   const [status, setStatus] = useState("");
   const [isSending, setIsSending] = useState(false);
@@ -16,9 +22,7 @@ export function ContactModal({ onClose }: Props) {
   async function submitContact(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
-    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    const { serviceId, templateId, publicKey } = emailConfig;
 
     if (!serviceId || !templateId || !publicKey) {
       setStatus("Add your EmailJS environment variables to enable sending.");

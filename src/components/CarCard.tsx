@@ -1,5 +1,6 @@
 import type { KeyboardEvent } from "react";
 import type { Car } from "../types";
+import { formatPrice } from "../utils/formatters";
 
 type CarCardProps = { car: Car; onSelect: (car: Car) => void };
 
@@ -29,7 +30,7 @@ export function CarCard({ car, onSelect }: CarCardProps) {
         <h3 className="car-name">{car.title}</h3>
         <div className="car-meta">
           <span>{car.rating.toFixed(1)} / 5 rating</span>
-          <span className="car-price">${car.price.toLocaleString()}</span>
+          <span className="car-price">{formatPrice(car.price)}</span>
         </div>
         <span className="details-button">View details</span>
       </div>

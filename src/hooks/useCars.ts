@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { API_URL } from "../data/cars";
+import { API_PRODUCT_COUNT, API_URL } from "../data/cars";
 import type { Car } from "../types";
 
 type ApiCar = Omit<Car, "listingIndex" | "listingKey" | "displayImage">;
@@ -7,7 +7,7 @@ type ApiResponse = { products: ApiCar[] };
 
 export function useCars() {
   const [cars, setCars] = useState<Car[]>([]);
-  const [status, setStatus] = useState("Loading vehicles from DummyJSON...");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export function useCars() {
         if (!response.ok) throw new Error("API request failed");
 
         const { products } = (await response.json()) as ApiResponse;
-        if (products.length !== 5 || !products[0]?.images[1]) {
+        if (products.length !== API_PRODUCT_COUNT || !products[0]?.images[1]) {
           throw new Error("Unexpected vehicle response");
         }
 
@@ -33,11 +33,11 @@ export function useCars() {
         }));
 
         setCars(displayCars);
-        setStatus("Showing exactly 6 vehicle cards fetched from DummyJSON.");
+        setErrorMessage(null);
       } catch (error) {
         if (error instanceof DOMException && error.name === "AbortError") return;
         setCars([]);
-        setStatus("Vehicle data is temporarily unavailable. Please try again.");
+        setErrorMessage("Vehicle data is temporarily unavailable. Please try again.");
       } finally {
         if (!controller.signal.aborted) setIsLoading(false);
       }
@@ -47,5 +47,5 @@ export function useCars() {
     return () => controller.abort();
   }, []);
 
-  return { cars, isLoading, status, setStatus };
+  return { cars, errorMessage, isLoading };
 }
