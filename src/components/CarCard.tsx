@@ -21,7 +21,9 @@ export function CarCard({ car, onSelect }: CarCardProps) {
       onClick={() => onSelect(car)}
       onKeyDown={openWithKeyboard}
     >
-      <div className="car-image" style={{ backgroundImage: `url("${car.displayImage}")` }} role="img" aria-label={`${car.brand} ${car.title}`} />
+      <div className="car-image" style={{ backgroundImage: `url("${car.displayImage}")` }} role="img" aria-label={`${car.brand} ${car.title}`}>
+        <span className="car-details-cue" aria-hidden="true">More details <span>→</span></span>
+      </div>
       <div className="car-info">
         <span className="car-year">{car.brand} / {car.availabilityStatus}</span>
         <h3 className="car-name">{car.title}</h3>

@@ -416,8 +416,8 @@ h2 {
   animation: rise 0.5s both;
 }
 .car-card:hover {
-  border-color: #c5b9dd;
-  box-shadow: 0 13px 32px rgba(56, 37, 87, 0.14);
+  border-color: #aeb3bb;
+  box-shadow: 0 13px 32px rgba(39, 42, 48, 0.15);
   transform: translateY(-3px);
 }
 .car-card[role="button"] {
@@ -461,9 +461,36 @@ h2 {
   margin-top: 16px;
 }
 .car-image {
+  position: relative;
+  overflow: hidden;
   height: 194px;
   background-position: center;
   background-size: cover;
+}
+.car-details-cue {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: rgba(47, 51, 57, 0.58);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.car-details-cue > span {
+  margin-left: 4px;
+  color: #ffd45c;
+  font-size: 18px;
+}
+.car-card:hover .car-details-cue,
+.car-card:focus-visible .car-details-cue {
+  opacity: 1;
+  transform: scale(1);
 }
 .car-info {
   padding: 19px 20px 21px;
